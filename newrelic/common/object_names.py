@@ -73,6 +73,7 @@ else:
 #   __self__:
 #     instance to which a method is bound, or None
 
+
 def _module_name(object):
     mname = None
 
@@ -119,6 +120,7 @@ def _module_name(object):
         mname = '<unknown>'
 
     return mname
+
 
 def _object_context_py2(object):
 
@@ -227,7 +229,8 @@ def _object_context_py2(object):
 
     mname = _module_name(owner or object)
 
-    return (mname, path)
+    return mname, path
+
 
 def _object_context_py3(object):
 
@@ -277,7 +280,8 @@ def _object_context_py3(object):
 
     mname = _module_name(owner or object)
 
-    return (mname, path)
+    return mname, path
+
 
 def object_context(target):
     """Returns a tuple identifying the supplied object. This will be of
@@ -370,6 +374,7 @@ def object_context(target):
 
     return details
 
+
 def callable_name(object, separator=':'):
     """Returns a string name identifying the supplied object. This will be
     of the form 'module:object_path'.
@@ -389,6 +394,7 @@ def callable_name(object, separator=':'):
 
     return separator.join(object_context(object))
 
+
 def expand_builtin_exception_name(name):
 
     # Convert name to module:name format, if it's a builtin Exception.
@@ -403,6 +409,7 @@ def expand_builtin_exception_name(name):
             return callable_name(exception)
 
     return name
+
 
 def _is_py3_method(target):
     return six.PY3 and inspect.ismethod(target)

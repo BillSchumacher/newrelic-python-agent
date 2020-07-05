@@ -27,9 +27,11 @@ import threading
 
 _lock = threading.Lock()
 
+
 class _NullHandler(logging.Handler):
     def emit(self, record):
         pass
+
 
 _agent_logger = logging.getLogger('newrelic')
 _agent_logger.addHandler(_NullHandler())
@@ -38,6 +40,7 @@ _LOG_FORMAT = '%(asctime)s (%(process)d/%(threadName)s) ' \
               '%(name)s %(levelname)s - %(message)s'
 
 _initialized = False
+
 
 def _initialize_stdout_logging(log_level):
     handler = logging.StreamHandler(sys.stdout)
@@ -50,6 +53,7 @@ def _initialize_stdout_logging(log_level):
 
     _agent_logger.debug('Initializing Python agent stdout logging.')
 
+
 def _initialize_stderr_logging(log_level):
     handler = logging.StreamHandler(sys.stderr)
 
@@ -60,6 +64,7 @@ def _initialize_stderr_logging(log_level):
     _agent_logger.setLevel(log_level)
 
     _agent_logger.debug('Initializing Python agent stderr logging.')
+
 
 def _initialize_file_logging(log_file, log_level):
     handler = logging.FileHandler(log_file)
@@ -72,6 +77,7 @@ def _initialize_file_logging(log_file, log_level):
 
     _agent_logger.debug('Initializing Python agent logging.')
     _agent_logger.debug('Log file "%s".' % log_file)
+
 
 def initialize_logging(log_file, log_level):
     global _initialized
@@ -106,9 +112,11 @@ def initialize_logging(log_file, log_level):
 # This is to filter out the overly verbose log messages at INFO level
 # made by the urllib3 module embedded in the bundled requests module.
 
+
 class RequestsConnectionFilter(logging.Filter):
     def filter(self, record):
         return False
+
 
 _requests_logger = logging.getLogger(
     'newrelic.packages.requests.packages.urllib3.connectionpool')

@@ -207,7 +207,7 @@ def resolve_path(module, name):
         else:
             original = getattr(original, attribute)
 
-    return (parent, attribute, original)
+    return parent, attribute, original
 
 
 def apply_patch(parent, attribute, replacement):

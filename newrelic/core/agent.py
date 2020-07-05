@@ -275,7 +275,8 @@ class Agent(object):
         print('Applications: %r' % (
                 sorted(self._applications.keys())), file=file)
 
-    def global_settings(self):
+    @staticmethod
+    def global_settings(self=None):
         """Returns the global default settings object. If access is
         needed to this prior to initialising the agent, use the
         'newrelic.core.config' module directly.

@@ -415,6 +415,7 @@ def _environ_as_mapping(name, default=''):
 def _parse_ignore_status_codes(value, target):
     items = value.split()
     for item in items:
+        negate = False
         try:
             negate = item.startswith('!')
             if negate:

@@ -56,15 +56,9 @@ except ImportError:
 
 _logger = logging.getLogger(__name__)
 
-LOCALHOST_EQUIVALENTS = set([
-    'localhost',
-    '127.0.0.1',
-    '0.0.0.0',
-    '0:0:0:0:0:0:0:0',
-    '0:0:0:0:0:0:0:1',
-    '::1',
-    '::',
-])
+LOCALHOST_EQUIVALENTS = {'localhost', '127.0.0.1', '0.0.0.0',
+                         '0:0:0:0:0:0:0:0', '0:0:0:0:0:0:0:1',
+                         '::1', '::'}
 
 
 def logical_processor_count():
@@ -187,7 +181,7 @@ def _linux_physical_processor_count(filename=None):
     num_physical_cores = sum(physical_processors.values()) or (processors
                                         if processors == 1 else None)
 
-    return (num_physical_processors, num_physical_cores)
+    return num_physical_processors, num_physical_cores
 
 
 def _darwin_physical_processor_count():
@@ -209,7 +203,7 @@ def _darwin_physical_processor_count():
     except (subprocess.CalledProcessError, ValueError):
         num_physical_cores = None
 
-    return (num_physical_processors, num_physical_cores)
+    return num_physical_processors, num_physical_cores
 
 
 def physical_processor_count():
@@ -224,7 +218,7 @@ def physical_processor_count():
     elif sys.platform == 'darwin':
         return _darwin_physical_processor_count()
 
-    return (None, None)
+    return None, None
 
 
 def _linux_total_physical_memory(filename=None):
