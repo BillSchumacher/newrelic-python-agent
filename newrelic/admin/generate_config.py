@@ -16,8 +16,9 @@ from __future__ import print_function
 
 from newrelic.admin import command, usage
 
+
 @command('generate-config', 'license_key [output_file]',
-"""Generates a sample agent configuration file for <license_key>.""")
+         """Generates a sample agent configuration file for <license_key>.""")
 def generate_config(args):
     import os
     import sys

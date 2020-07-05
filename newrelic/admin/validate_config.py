@@ -107,8 +107,8 @@ def _run_validation_test():
     def _start_response(*args):
         pass
 
-    _environ = { 'SCRIPT_NAME': '', 'PATH_INFO': '/test',
-                 'QUERY_STRING': 'key=value' }
+    _environ = {'SCRIPT_NAME': '', 'PATH_INFO': '/test',
+                'QUERY_STRING': 'key=value'}
 
     _iterable = _wsgi_application(_environ, _start_response)
     _iterable.close()
@@ -116,7 +116,8 @@ def _run_validation_test():
     _background_task()
 
     _function4(params={'err-key-4': 4, 'err-key-5': 5.0},
-            application=application())
+               application=application())
+
 
 _user_message = """
 Running Python agent test.
@@ -136,51 +137,23 @@ requesting help with resolving any issues with the test not reporting
 data to the New Relic UI.
 """
 
+
 @command('validate-config', 'config_file [log_file]',
-"""Validates the syntax of <config_file>. Also tests connectivity to New
-Relic core application by connecting to the account corresponding to the
-license key listed in the configuration file, and reporting test data under
-the application name 'Python Agent Test'.""")
+         """Validates the syntax of <config_file>. Also tests connectivity to New
+         Relic core application by connecting to the account corresponding to the
+         license key listed in the configuration file, and reporting test data under
+         the application name 'Python Agent Test'.""")
 def validate_config(args):
     import os
     import sys
     import logging
     import time
-
-    if len(args) == 0:
-        usage('validate-config')
-        sys.exit(1)
-
     from newrelic.api.application import register_application
-    from newrelic.config import initialize
-    from newrelic.core.config import global_settings
-
-    if len(args) >= 2:
-        log_file = args[1]
-    else:
-        log_file = '/tmp/python-agent-test.log'
-
-    log_level = logging.DEBUG
-
-    try:
-        os.unlink(log_file)
-    except Exception:
-        pass
-
-    config_file = args[0]
-    environment = os.environ.get('NEW_RELIC_ENVIRONMENT')
-
-    if config_file == '-':
-        config_file = os.environ.get('NEW_RELIC_CONFIG_FILE')
-
-    initialize(config_file, environment, ignore_errors=False,
-            log_file=log_file, log_level=log_level)
+    from newrelic.admin.helpers import initialize_usage, get_log_file_path
+    _settings = initialize_usage('validate-config', args)
 
     _logger = logging.getLogger(__name__)
-
     _logger.debug('Starting agent validation.')
-
-    _settings = global_settings()
 
     app_name = os.environ.get('NEW_RELIC_TEST_APP_NAME', 'Python Agent Test')
 
@@ -192,6 +165,7 @@ def validate_config(args):
     _settings.debug.log_data_collector_payloads = True
     _settings.debug.log_transaction_trace_payload = True
 
+    log_file = get_log_file_path(args)
     print(_user_message % dict(app_name=app_name, log_file=log_file))
 
     _logger.debug('Register test application.')
