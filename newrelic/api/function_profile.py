@@ -20,6 +20,7 @@ import time
 
 from newrelic.common.object_wrapper import FunctionWrapper, wrap_object
 
+
 class FunctionProfile(object):
 
     def __init__(self, profile):
@@ -32,6 +33,7 @@ class FunctionProfile(object):
     def __exit__(self, exc, value, tb):
         self.profile.disable()
         pass
+
 
 class FunctionProfileSession(object):
 
@@ -72,13 +74,16 @@ class FunctionProfileSession(object):
             self.last = time.time()
             self.active = False
 
+
 def FunctionProfileWrapper(wrapped, filename, delay=1.0, checkpoint=30):
     wrapper = FunctionProfileSession(filename, delay, checkpoint)
     return FunctionWrapper(wrapped, wrapper)
 
+
 def function_profile(filename, delay=1.0, checkpoint=30):
     return functools.partial(FunctionProfileWrapper, filename=filename,
             delay=delay, checkpoint=checkpoint)
+
 
 def wrap_function_profile(module, object_path, filename, delay=1.0,
         checkpoint=30):
