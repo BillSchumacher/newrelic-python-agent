@@ -34,7 +34,7 @@ _commands = {}
 
 
 def command(name, options='', description='', hidden=False,
-        log_intercept=True, deprecated=False):
+            log_intercept=True, deprecated=False):
     def wrapper(callback):
         callback.name = name
         callback.options = options
@@ -134,16 +134,13 @@ def load_external_plugins():
 
 
 def main():
+    _command = 'help'
     try:
         if len(sys.argv) > 1:
-            command = sys.argv[1]
-        else:
-            command = 'help'
-
-        callback = _commands[command]
-
+            _command = sys.argv[1]
+        callback = _commands[_command]
     except Exception:
-        print("Unknown command '%s'." % command, end='')
+        print("Unknown command '%s'." % _command, end='')
         print("Type 'newrelic-admin help' for usage.")
         sys.exit(1)
 
